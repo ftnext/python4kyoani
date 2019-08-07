@@ -66,3 +66,19 @@ class TestPy4kaImageSave(TestCase):
         img.save(save_name)
 
         self.assertEqual([call(save_name)], image.save.call_args_list)
+
+
+class TestPy4kaImageStartCoordinateOfText(TestCase):
+    @patch('python4kyoani.image.Image.open')
+    def test(self, mock_open):
+        image = mock_open.return_value
+        image.size = (300, 400)
+
+        image_path = MagicMock()
+        img = i.Py4kaImage(image_path)
+        message = 'Hello'
+        x, y = img._start_coordinate_of_text(message)
+
+        font_size = round(0.1*400)
+        self.assertEqual(round((300-(0.5*font_size*len('Hello')))/2), x)
+        self.assertEqual(round((400-font_size)/2), y)

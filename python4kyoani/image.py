@@ -7,7 +7,14 @@ class Py4kaImage:
         self.draw = None
 
     def _start_coordinate_of_text(self, message):
-        raise NotImplementedError
+        width, height = self.image.size
+        font_size = round(0.1*height)
+        # 日本語では1文字あたりfont_size × font_sizeの正方形と想定できるが、
+        # アルファベットは縦方向に長いので、0.5をかけることにする
+        message_length = 0.5 * font_size * len(message)
+        x_coordinate = round((width - message_length)/2)
+        y_coordinate = round((height-font_size)/2)
+        return x_coordinate, y_coordinate
 
     def write(self, message):
         if self.draw is None:
