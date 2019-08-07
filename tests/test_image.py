@@ -54,3 +54,15 @@ class TestPy4kaImageWrite(TestCase):
         self.assertEqual(
             [call(start_coordinate, message, fill='gray')],
             img.draw.text.call_args_list)
+
+
+class TestPy4kaImageSave(TestCase):
+    @patch('python4kyoani.image.Image.open')
+    def test(self, mock_open):
+        image = mock_open.return_value
+        image_path = MagicMock()
+        img = i.Py4kaImage(image_path)
+        save_name = MagicMock()
+        img.save(save_name)
+
+        self.assertEqual([call(save_name)], image.save.call_args_list)

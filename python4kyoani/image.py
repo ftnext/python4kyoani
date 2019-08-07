@@ -15,6 +15,9 @@ class Py4kaImage:
         start_coordinate = self._start_coordinate_of_text(message)
         self.draw.text(start_coordinate, message, fill='gray')
 
+    def save(self, save_name):
+        self.image.save(save_name)
+
 
 def create_py4kaimage(image_path):
     return Py4kaImage(image_path)
