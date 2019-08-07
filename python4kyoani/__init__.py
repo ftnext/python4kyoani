@@ -2,6 +2,7 @@ from pathlib import Path
 import sys
 
 import python4kyoani.image as i
+import python4kyoani.util as u
 
 
 def main():
@@ -11,4 +12,5 @@ def main():
         return
     image = i.create_py4kaimage(image_path)
     image.write('PrayForKyoani')
-    image.save(image_path)
+    save_name = u.name_for_save(image_path)
+    image.save(save_name)
