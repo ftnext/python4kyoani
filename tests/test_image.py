@@ -62,11 +62,14 @@ class TestPy4kaImageFontSize(TestCase):
 class TestPy4kaImageWrite(TestCase):
     @patch('python4kyoani.image.Image.open')
     @patch('python4kyoani.image.ImageDraw.Draw')
+    @patch('python4kyoani.image.load_font')
     @patch('python4kyoani.image.Py4kaImage._start_coordinate_of_text')
     def test_draw_not_set(
-            self, start_coordinate_of_text, image_draw_draw, mock_open):
+            self, start_coordinate_of_text, load_font,
+            image_draw_draw, mock_open):
         draw = image_draw_draw.return_value
         start_coordinate = start_coordinate_of_text.return_value
+        font = load_font.return_value
 
         image_path = MagicMock()
         img = i.Py4kaImage(image_path)
@@ -77,25 +80,29 @@ class TestPy4kaImageWrite(TestCase):
         self.assertEqual([call(img.image)], image_draw_draw.call_args_list)
         self.assertEqual(
             [call(message)], start_coordinate_of_text.call_args_list)
+        self.assertEqual([call(img)], load_font.call_args_list)
         self.assertEqual(
-            [call(start_coordinate, message, fill='gray')],
+            [call(start_coordinate, message, font=font, fill='gray')],
             draw.text.call_args_list)
         self.assertEqual(draw, img.draw)
 
     @patch('python4kyoani.image.Image.open')
+    @patch('python4kyoani.image.load_font')
     @patch('python4kyoani.image.Py4kaImage._start_coordinate_of_text')
-    def test_draw_set(self, start_coordinate_of_text, mock_open):
+    def test_draw_set(self, start_coordinate_of_text, load_font, mock_open):
         start_coordinate = start_coordinate_of_text.return_value
+        font = load_font.return_value
 
         image_path = MagicMock()
         img = i.Py4kaImage(image_path)
         message = MagicMock()
         img.write(message)
 
+        self.assertEqual([call(img)], load_font.call_args_list)
         self.assertEqual(
             [call(message)], start_coordinate_of_text.call_args_list)
         self.assertEqual(
-            [call(start_coordinate, message, fill='gray')],
+            [call(start_coordinate, message, font=font, fill='gray')],
             img.draw.text.call_args_list)
 
 
