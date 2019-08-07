@@ -16,6 +16,49 @@ class TestCreatePy4kaimage(TestCase):
         self.assertIsNone(img.draw)
 
 
+class TestPy4kaimageWidth(TestCase):
+    @patch('python4kyoani.image.Image.open')
+    def test(self, mock_open):
+        image = mock_open.return_value
+        image.size = (400, 300)
+
+        img = i.Py4kaImage(MagicMock())
+
+        self.assertEqual(img.width, 400)
+
+
+class TestPy4kaimageHeight(TestCase):
+    @patch('python4kyoani.image.Image.open')
+    def test(self, mock_open):
+        image = mock_open.return_value
+        image.size = (400, 300)
+
+        img = i.Py4kaImage(MagicMock())
+
+        self.assertEqual(img.height, 300)
+
+
+class TestPy4kaImageFontSize(TestCase):
+    @patch('python4kyoani.image.Image.open')
+    def test(self, mock_open):
+        image = mock_open.return_value
+        image.size = (400, 300)
+
+        img = i.Py4kaImage(MagicMock())
+
+        self.assertEqual(img.font_size, 30)
+
+    @patch('python4kyoani.image.Image.open')
+    def test_using_round(self, mock_open):
+        image = mock_open.return_value
+        image.size = (400, 305)
+
+        img = i.Py4kaImage(MagicMock())
+
+        # round(30.5)は30となる仕様
+        self.assertEqual(img.font_size, 30)
+
+
 class TestPy4kaImageWrite(TestCase):
     @patch('python4kyoani.image.Image.open')
     @patch('python4kyoani.image.ImageDraw.Draw')

@@ -6,6 +6,18 @@ class Py4kaImage:
         self.image = Image.open(image_path)
         self.draw = None
 
+    @property
+    def width(self):
+        return self.image.size[0]
+
+    @property
+    def height(self):
+        return self.image.size[1]
+
+    @property
+    def font_size(self):
+        return round(0.1 * self.height)
+
     def _start_coordinate_of_text(self, message):
         width, height = self.image.size
         font_size = round(0.1*height)
