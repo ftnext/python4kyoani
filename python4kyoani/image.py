@@ -1,4 +1,4 @@
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 
 
 class Py4kaImage:
@@ -44,4 +44,5 @@ def create_py4kaimage(image_path):
 
 
 def load_font(py4kaimage):
-    raise NotImplementedError
+    size = py4kaimage.font_size
+    return ImageFont.truetype('Arial.ttf', size)

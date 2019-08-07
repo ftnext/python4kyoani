@@ -132,3 +132,15 @@ class TestPy4kaImageStartCoordinateOfText(TestCase):
         font_size = round(0.1*400)
         self.assertEqual(round((300-(0.5*font_size*len('Hello')))/2), x)
         self.assertEqual(round((400-font_size)/2), y)
+
+
+class TestLoadFont(TestCase):
+    @patch('python4kyoani.image.ImageFont.truetype')
+    def test(self, truetype):
+        py4kaimage = MagicMock()
+        size = py4kaimage.font_size
+
+        font = i.load_font(py4kaimage)
+
+        self.assertEqual([call('Arial.ttf', size)], truetype.call_args_list)
+        self.assertEqual(truetype.return_value, font)
